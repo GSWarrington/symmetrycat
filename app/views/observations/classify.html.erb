@@ -1,0 +1,390 @@
+<style type="text/css">
+    .labelMaker{
+        border:solid;
+        width:500px;
+        height:300;
+        display: inline-block;
+        float: left;
+        position: relative;
+    }
+
+    .wrapper canvas {
+        margin-right:10px;
+        float:left;
+    }
+
+</style>
+
+<h1><%= @observation.title %></h1>
+
+<ul>
+  <li><%= link_to "Return to index", root_path %></li>
+</ul>
+
+<!-- // this seems to work -->
+<!-- <% if @observation.pic.attached? %> -->
+<!--   <%= image_tag url_for(@observation.pic.variant(resize_to_limit: [200,140])) %> -->
+<!-- <% end %> -->
+  
+<!-- https://img.ly/blog/how-to-draw-on-an-image-with-javascript/ -->
+<div class="wrapper">
+  <canvas
+    id="canvas"
+    width="600"
+    height="600"
+    style="border: 2px solid black;">
+    float="left"
+  </canvas>
+<div style="margin-top:5px" float="left" class="labelMaker">
+  <h3>Annotate image</h3>
+  <span><b>Rotation: </b></span>
+      <input type="radio" name="colorRadio" value="60deg" checked />
+      <label for="black">60 deg</label>
+      <input type="radio" name="colorRadio" value="90deg" />
+      <label for="black">90 deg</label>
+      <input type="radio" name="colorRadio" value="120deg" />
+      <label for="black">120 deg</label>
+      <input type="radio" name="colorRadio" value="180deg" />
+      <label for="black">180 deg</label><br>
+  <span><b>Other: </b></span>
+      <input type="radio" name="colorRadio" value="ref" />
+      <label for="black">Reflection</label>
+      <input type="radio" name="colorRadio" value="glide" />
+      <label for="black">Glide reflection</label>
+      <input type="radio" name="colorRadio" value="trans" />
+      <label for="black">Translation</label>
+      <button id="clear" >Clear</button>
+<!--     <div style="margin-top:5px"> -->
+<!-- </div> -->
+<h3>Classify image</h3>
+<%= form_with model: @observation, :id=>"myform" do |blahform| %>
+<%= blahform.hidden_field :rotations, name: "rotations", value: "" %>
+<%= blahform.hidden_field :reflections, name: "reflections", value: "" %>
+<%= blahform.hidden_field :glides, name: "glides", value: "" %>
+<%= blahform.hidden_field :translations, name: "translations", value: "" %>
+<%= blahform.hidden_field :title %>
+<fieldset>
+    <b>No rotation:</b></b> 
+    <%= blahform.radio_button :group, 'cm' %> cm
+    <%= blahform.radio_button :group, 'pm' %> pm
+    <%= blahform.radio_button :group, 'pg' %> pg
+    <%= blahform.radio_button :group, 'p1' %> p1<br>
+
+    <b>180-degree: </b> 
+    <%= blahform.radio_button :group, 'pmm' %> pmm
+    <%= blahform.radio_button :group, 'cmm' %> cmm
+    <%= blahform.radio_button :group, 'pmg' %> pmg
+    <%= blahform.radio_button :group, 'pgg' %> pgg
+    <%= blahform.radio_button :group, 'p2'  %> p2<br>
+
+    <b>120-degree:</b> 
+    <%= blahform.radio_button :group, 'p4m' %> p4m
+    <%= blahform.radio_button :group, 'p4g' %> p4g
+    <%= blahform.radio_button :group, 'p4'  %> p4<br>
+
+    <b>90-degree:</b> 
+    <%= blahform.radio_button :group, 'p3m1' %> p3m1
+    <%= blahform.radio_button :group, 'p31m' %> p31m
+    <%= blahform.radio_button :group, 'p3'   %> p3<br>
+
+    <b>60-degree:</b> 
+    <%= blahform.radio_button :group, 'p6m' %> p6m
+    <%= blahform.radio_button :group, 'p6'  %> p6
+    <%= blahform.submit %>
+    <% end %>      
+</fieldset>
+
+<h3>Classification guidance</h3>
+<fieldset onchange="RadioChanged()">
+    <legend id="type">Smallest rotation:</legend>
+    <input type="radio" name="rot" id="norot" value="norot">None
+    <input type="radio" name="rot" id="deg180" value="deg60">180 degrees
+    <input type="radio" name="rot" id="deg120" value="deg90">120 degrees
+    <input type="radio" name="rot" id="deg90" value="deg90">90 degrees
+    <input type="radio" name="rot" id="deg60" value="deg90">60 degrees
+</fieldset>
+<fieldset onchange="RadioChanged()">
+    <legend id="refexist">Is there a reflection?</legend>
+    <input type="radio" name="color" id="refyes" value="refyes">Yes
+    <input type="radio" name="color" id="refno" value="refno">No
+</fieldset>
+<fieldset id='NoneYes'>
+  If there is a glide on an axis that's not a reflection, then this is cm.<br>
+  Otherwise this is pm.
+</fieldset>
+<fieldset id='NoneNo'>
+  If there is a glide, then this is pg.<br>
+  Otherwise this is p1.
+</fieldset>
+
+<fieldset id='180Yes'>
+  If there are reflections in two directions then
+  <ul>
+    <li> If all rotation centers are on reflection axes, this is pmm.
+    <li> Otherwise, this is cmm.
+  </ul>
+  Otherwise this is pmg.
+</fieldset>
+<fieldset id='180No'>
+  If there is a glide then this is pgg.
+  Otherwise this is p2.
+</fieldset>
+
+<fieldset id='120Yes'>
+  If all three-fold centers are on reflection axes, then p3m1.
+  Otherwise p31m.
+</fieldset>
+<fieldset id='120No'>
+  p3.
+</fieldset>
+
+<fieldset id='90Yes'>
+  If there are reflections in four directions then p4m.
+  Otherwise p4g.
+</fieldset>
+<fieldset id='90No'>
+  p4.
+</fieldset>
+
+<fieldset id='60Yes'>
+  p6m.
+</fieldset>
+<fieldset id='60No'>
+  p6.
+</fieldset>
+</div>
+
+</div>
+    <script>
+
+      RadioChanged();
+      function RadioChanged()
+      {
+	  document.getElementById('NoneYes').style.display='none';
+	  document.getElementById('NoneNo').style.display='none';
+	  document.getElementById('180Yes').style.display='none';
+	  document.getElementById('180No').style.display='none';
+	  document.getElementById('120Yes').style.display='none';
+	  document.getElementById('120No').style.display='none';
+	  document.getElementById('90Yes').style.display='none';
+	  document.getElementById('90No').style.display='none';
+	  document.getElementById('60Yes').style.display='none';
+	  document.getElementById('60No').style.display='none';
+	  if(document.getElementById('norot').checked)
+	  {
+	      if(document.getElementById('refyes').checked)
+	      {
+		  document.getElementById('NoneYes').style.display='block';
+	      } else if(document.getElementById('refno').checked)
+	      {
+		  document.getElementById('NoneNo').style.display='block';
+	      }
+	  }
+	  if(document.getElementById('deg180').checked)
+	  {
+	      if(document.getElementById('refyes').checked)
+	      {
+		  document.getElementById('180Yes').style.display='block';
+	      } else if(document.getElementById('refno').checked)
+	      {
+		  document.getElementById('180No').style.display='block';
+	      }
+	  }
+	  if(document.getElementById('deg120').checked)
+	  {
+	      if(document.getElementById('refyes').checked)
+	      {
+		  document.getElementById('120Yes').style.display='block';
+	      } else if(document.getElementById('refno').checked)
+	      {
+		  document.getElementById('120No').style.display='block';
+	      }
+	  }
+	  if(document.getElementById('deg90').checked)
+	  {
+	      if(document.getElementById('refyes').checked)
+	      {
+		  document.getElementById('90Yes').style.display='block';
+	      } else if(document.getElementById('refno').checked)
+	      {
+		  document.getElementById('90No').style.display='block';
+	      }
+	  }
+	  if(document.getElementById('deg60').checked)
+	  {
+	      if(document.getElementById('refyes').checked)
+	      {
+		  document.getElementById('60Yes').style.display='block';
+	      } else if(document.getElementById('refno').checked)
+	      {
+		  document.getElementById('60No').style.display='block';
+	      }
+	  }
+      }
+
+// load up the image
+var img = document.createElement("img");
+var curform = document.getElementById("myform");
+//      console.log("rots: ",curform.rotations.value);
+
+  // img.src = "<%= url_for(@observation.pic) %>"
+      img.src = "<%= url_for(@observation.pic.variant(resize_to_limit: [600,600])) %>"
+// img.src = "<%= url_for(@observation.pic) %>"
+
+// enabling drawing on the blank canvas
+      // console.log(img.naturalWidth);
+      // console.log(img.naturalHeight);
+      // console.log("blah");
+      // img.width = img.naturalWidth;
+      // img.height = img.naturalHeight;
+      // img.width = 600;
+      // img.height = 400;
+// document.body.appendChild(img);
+drawOnImage(img);
+
+var colorElement = document.getElementsByName("colorRadio");
+var cur_symm;
+      var st_x = 0;
+      var st_y = 0;
+      var en_x = 0;
+      var en_y = 0;
+colorElement.forEach((c) => {
+  if (c.checked) cur_symm = c.value;
+});
+colorElement.forEach((c) => {
+  c.onclick = () => {
+    cur_symm = c.value;
+  };
+});
+
+function drawOnImage(image = null) {
+  const canvasElement = document.getElementById("canvas");
+  
+  const context = canvasElement.getContext("2d");
+  
+//  console.log(image);
+//  console.log("<%= url_for(@observation.pic) %>");
+  // if an image is present,
+  // the image passed as parameter is drawn in the canvas
+    const imageWidth = 0;
+    const imageHeight = 0;
+  var rect = canvas.getBoundingClientRect();
+
+  if (image) {
+    // const imageWidth = image.width;
+    // const imageHeight = image.height;
+    // console.log(image.width,image.height);
+    // console.log(typeof(image));
+    
+    // rescaling the canvas element
+    
+    // console.log(image,imageWidth,imageHeight);
+      context.drawImage(image, 0, 0); // , 400, 400);
+  }
+  
+    img.onload = () => {
+	const imageWidth = 600; // img.naturalWidth;
+	const imageHeight = 600; // img.naturalHeight;
+	// console.log(imageWidth,imageHeight,imageHeight);
+	// canvasElement.width = imageWidth;
+	// canvasElement.height = imageHeight;
+	context.drawImage(img,0,0);
+    }
+
+  const clearElement = document.getElementById("clear");
+  clearElement.onclick = () => {
+    context.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  };
+  
+  var isDrawing = false;
+  canvasElement.onmousedown = (e) => {
+    // are we drawing a rotation or a line?
+      if (["60deg","90deg","120deg","180deg"].includes(cur_symm)) {
+	  st_x = e.clientX - rect.left;
+	  st_y = e.clientY - rect.top;
+          context.beginPath();
+	  var tmpstr = "[";
+	  if(cur_symm == "60deg") {
+	      context.arc(st_x, st_y, 10, 0, 2 * Math.PI/6, false);
+	      tmpstr += '60,'
+	  } else if (cur_symm == "90deg") {
+	      context.arc(st_x, st_y, 10, 0, Math.PI/2, false);
+	      tmpstr += '90,'
+	  } else if (cur_symm == "120deg") {
+	      context.arc(st_x, st_y, 10, 0, 2 * Math.PI/3, false);
+	      tmpstr += '120,'
+	  } else if (cur_symm == "180deg") {
+	      context.arc(st_x, st_y, 10, 0, Math.PI, false);
+	      tmpstr += '180,'
+	  }
+	  context.fillStyle = 'green';
+	  context.fill();
+	  context.lineWidth = 5;
+	  context.strokeStyle = '#003300';
+	  context.stroke();
+	  tmpstr += st_x.toString();
+	  tmpstr += ',';
+	  tmpstr += st_y.toString();
+	  tmpstr += ']';
+	  curform.rotations.value += tmpstr;
+	  console.log(curform.rotations);
+      } else {
+	  if (!isDrawing) {
+	      st_x = e.clientX - rect.left;
+	      st_y = e.clientY - rect.top;
+	      console.log("starting",st_x,st_y);
+	  } else {
+	      en_x = e.clientX - rect.left;
+	      en_y = e.clientY - rect.top;
+	      console.log("ending",en_x,en_y);
+	      context.beginPath();
+	      context.moveTo(st_x, st_y);
+	      context.lineWidth = 2;
+	      var tmpstr = "[";
+	      if(cur_symm == "ref") {
+		  context.strokeStyle = "blue";
+		  tmpstr += 'ref,';
+	      } else if(cur_symm == "glide") {
+		  context.strokeStyle = "green";
+		  tmpstr += 'glide,';
+	      } else {
+		  context.strokeStyle = "gray";
+		  tmpstr += 'trans,';
+	      }
+	      context.lineJoin = "round";
+	      context.lineCap = "round";
+	      context.lineTo(en_x, en_y);
+	      // context.closePath();
+	      tmpstr += (st_x.toString() + ',');
+	      tmpstr += (st_y.toString() + ',');
+	      tmpstr += (en_x.toString() + ',');
+	      tmpstr += (en_y.toString() + ']');
+	      context.stroke();
+	      if(cur_symm == "ref") {
+		  curform.reflections.value += tmpstr;
+	      } else if(cur_symm == "glide") {
+		  curform.glides.value += tmpstr;
+	      } else {
+		  curform.translations.value += tmpstr;
+	      }
+	  };
+          isDrawing = !isDrawing;
+      };
+
+  };
+  
+  // canvasElement.onmousemove = (e) => {
+  //   if (isDrawing) {
+  //     context.lineTo(e.clientX-rect.left, e.clientY-rect.top);
+  //     context.stroke();
+  //   }
+  // };
+  
+  // canvasElement.onmouseup = function () {
+  //   isDrawing = false;
+  //   context.closePath();
+  // };
+
+}
+
+</script>

@@ -1,0 +1,21 @@
+<h1><%= @observation.title %></h1>
+
+<ul>
+  <!-- <li><%= link_to "Classify", edit_observation_path(@observation) %></li> -->
+  <li><a href="/observations/<%= @observation.id %>/classify">
+      <%= "Classify" %>
+  <li><%= link_to "Edit", edit_observation_path(@observation) %></li>
+  <li><%= link_to "Destroy", observation_path(@observation), data: {
+                    turbo_method: :delete,
+                  } %></li>
+          <%# turbo_confirm: "Are you sure?" %></li>
+  <li><%= link_to "Return to index", root_path %></li>
+</ul>
+
+<h2>Wallpaper group: <%= @observation.group %></h2>
+<h2><%= @observation.address %></h2>
+
+<% if @observation.pic.attached? %>
+  <img src="<%=(url_for(@observation.pic))%>" width="500" height="600">
+<% end %>
+  

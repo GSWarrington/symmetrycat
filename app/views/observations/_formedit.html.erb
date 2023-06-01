@@ -1,0 +1,55 @@
+<h1><%= observation.date %></h1>
+
+<%= form_with model: observation do |form| %>
+<div>
+  <%= form.label :title %><br>
+  <%= form.text_field :title %>
+<p>
+  <%= form.label "Observation" %><br>
+  <%= form.file_field :pic %><br>
+<p>
+  <%= form.label :description %><br>
+  <%= form.text_field :description %><br>
+<p>  
+  <%= form.label :country %><br>
+  <%= form.text_field :country %>
+<p>  
+  <%= form.label :city %><br>
+  <%= form.text_field :city %>
+<p>  
+  <%= form.label :state %><br>
+  <%= form.text_field :state %>
+<p>  
+  <%= form.label :street %><br>
+  <%= form.text_field :street %>
+
+</div>
+
+<!-- This works, but don't know how to get lat/long back out of it. new page? -->
+<!-- <div class="leaflet-container"> -->
+<!--   <div id="map"> -->
+<!--     <script> -->
+<!--       var map = L.map('map').setView([45, -71], 13); -->
+
+<!--       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { -->
+<!-- 	  maxZoom: 19, -->
+<!-- 	  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' -->
+<!--       }).addTo(map); -->
+
+<!--       map.on('click', function(e){ -->
+<!-- 	  var marker = new L.marker(e.latlng).addTo(map); -->
+<!-- 	  function addMarker(e){ -->
+<!-- 	      // Add marker to map at click location; add popup window -->
+<!-- 	      var newMarker = new L.marker(e.latlng).addTo(map); -->
+<!-- 	  } -->
+<!--       }); -->
+
+<!--       </script> -->
+<!--   </div> -->
+<!-- </div> -->
+
+
+<div>
+  <%= form.submit %>
+</div>
+<% end %>

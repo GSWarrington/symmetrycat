@@ -1,0 +1,11 @@
+<h1>Observations</h1>
+<ul>
+  <% @observations.each do |observation| %>
+  <li>
+    <%= link_to observation.title, observation %>
+  </li>
+  <% end %>
+</ul>  
+
+
+<%= link_to "New Observation", new_observation_path %>
