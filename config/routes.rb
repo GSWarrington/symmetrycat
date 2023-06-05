@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'sessions/new'
   root "observations#index"
+  delete '/logout' => "sessions#destroy"
 
   # patch "/observations/:id", to: "observations#classifyupdate"
 
@@ -17,10 +17,9 @@ Rails.application.routes.draw do
 
   # get "/observations", to: "observations#index"
   # get "/observations/:id", to: "observations#show"
-  get "/login", to: "sessions#new"
-  post "/login", to: "sessions#create"
-  delete "/logout", to: "sessions#destroy"
-  get 'signup' => 'users#new'
+  get '/signup' => 'users#new'
+  get '/login' => "sessions#new"
+  post '/login' => "sessions#create"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

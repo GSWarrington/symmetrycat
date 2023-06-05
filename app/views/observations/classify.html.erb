@@ -1,3 +1,7 @@
+<%= content_for :head do %>
+  <%= javascript_import_module_tag "example" %>
+<% end %>
+
 <style type="text/css">
     .labelMaker{
         border:solid;
@@ -12,6 +16,55 @@
         margin-right:10px;
         float:left;
     }
+
+    #slidecontainer {
+	width: 100%;
+    }
+
+    .slider {
+	-webkit-appearance: none;
+	width: 50%;  /* <-- Problem was here when width is 100% */
+	height: 25px;
+	background: #d3d3d3;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+    }
+
+    .width-slider {
+	width: 50%;
+    }
+
+    .slider:hover {
+	opacity: 1;
+    }
+
+    /* This rule causes the label to vertically align properly */
+    label {
+	vertical-align:middle;
+	display:inline-block;
+    }
+
+    .line-col {
+	width: 100%;
+    }
+
+    /* .slider::-webkit-slider-thumb { */
+    /* 	-webkit-appearance: none; */
+    /* 	appearance: none; */
+    /* 	width: 25px; */
+    /* 	height: 25px; */
+    /* 	background: #4CAF50; */
+    /* 	cursor: pointer; */
+    /* } */
+
+    /* .slider::-moz-range-thumb { */
+    /* 	width: 25px; */
+    /* 	height: 25px; */
+    /* 	background: #4CAF50; */
+    /* 	cursor: pointer; */
+    /* } */
 
 </style>
 
@@ -38,23 +91,52 @@
 <div style="margin-top:5px" float="left" class="labelMaker">
   <h3>Annotate image</h3>
   <span><b>Rotation: </b></span>
-      <input type="radio" name="colorRadio" value="60deg" checked />
+      <input type="radio" name="symmRadio" value="60deg" checked />
       <label for="black">60 deg</label>
-      <input type="radio" name="colorRadio" value="90deg" />
+      <input type="radio" name="symmRadio" value="90deg" />
       <label for="black">90 deg</label>
-      <input type="radio" name="colorRadio" value="120deg" />
+      <input type="radio" name="symmRadio" value="120deg" />
       <label for="black">120 deg</label>
-      <input type="radio" name="colorRadio" value="180deg" />
+      <input type="radio" name="symmRadio" value="180deg" />
       <label for="black">180 deg</label><br>
   <span><b>Other: </b></span>
-      <input type="radio" name="colorRadio" value="ref" />
+      <input type="radio" name="symmRadio" value="ref" />
       <label for="black">Reflection</label>
-      <input type="radio" name="colorRadio" value="glide" />
+      <input type="radio" name="symmRadio" value="glide" />
       <label for="black">Glide reflection</label>
-      <input type="radio" name="colorRadio" value="trans" />
+      <input type="radio" name="symmRadio" value="trans" />
       <label for="black">Translation</label>
       <button id="clear" >Clear</button>
-<!--     <div style="margin-top:5px"> -->
+
+    <div class="slidecontainer">	
+      <!-- <input type="range" min="1" max="8" value="5" class="slider" id="sizeRange"> -->
+      <!-- <label>Value: <span id="demo"></span></label> -->
+
+      <b>Line width: </b>
+<div style="margin-top:5px" class="width-slider">
+      <input
+        type="range"
+        min="1"
+        max="8"
+        value="5"
+        class="size"
+        id="sizeRange"
+      />
+
+      <div class="line-col">
+      <b>Color:</b>
+      <input type="radio" name="colorRadio" id="linewhite" value="white"/>
+      <label for="black">White</label>
+      <input type="radio" name="colorRadio" id="lineblack" value="black"/>
+      <label for="black">Black</label>
+      <input type="radio" name="colorRadio" id="lineorange" value="orange"/>
+      <label for="black">Orange</label>
+      </div>
+    </div>
+  </div>
+
+
+    </div><!--     <div style="margin-top:5px"> -->
 <!-- </div> -->
 <h3>Classify image</h3>
 <%= form_with model: @observation, :id=>"myform" do |blahform| %>
@@ -155,223 +237,356 @@
 </div>
 
 </div>
-    <script>
 
-      RadioChanged();
-      function RadioChanged()
+<script>
+  RadioChanged();
+
+  function RadioChanged()
+  {
+      document.getElementById('NoneYes').style.display='none';
+      document.getElementById('NoneNo').style.display='none';
+      document.getElementById('180Yes').style.display='none';
+      document.getElementById('180No').style.display='none';
+      document.getElementById('120Yes').style.display='none';
+      document.getElementById('120No').style.display='none';
+      document.getElementById('90Yes').style.display='none';
+      document.getElementById('90No').style.display='none';
+      document.getElementById('60Yes').style.display='none';
+      document.getElementById('60No').style.display='none';
+      if(document.getElementById('norot').checked)
       {
-	  document.getElementById('NoneYes').style.display='none';
-	  document.getElementById('NoneNo').style.display='none';
-	  document.getElementById('180Yes').style.display='none';
-	  document.getElementById('180No').style.display='none';
-	  document.getElementById('120Yes').style.display='none';
-	  document.getElementById('120No').style.display='none';
-	  document.getElementById('90Yes').style.display='none';
-	  document.getElementById('90No').style.display='none';
-	  document.getElementById('60Yes').style.display='none';
-	  document.getElementById('60No').style.display='none';
-	  if(document.getElementById('norot').checked)
+	  if(document.getElementById('refyes').checked)
 	  {
-	      if(document.getElementById('refyes').checked)
-	      {
-		  document.getElementById('NoneYes').style.display='block';
-	      } else if(document.getElementById('refno').checked)
-	      {
-		  document.getElementById('NoneNo').style.display='block';
-	      }
+	      document.getElementById('NoneYes').style.display='block';
+	  } else if(document.getElementById('refno').checked)
+	  {
+	      document.getElementById('NoneNo').style.display='block';
 	  }
-	  if(document.getElementById('deg180').checked)
+      }
+      if(document.getElementById('deg180').checked)
+      {
+	  if(document.getElementById('refyes').checked)
 	  {
-	      if(document.getElementById('refyes').checked)
-	      {
-		  document.getElementById('180Yes').style.display='block';
-	      } else if(document.getElementById('refno').checked)
-	      {
-		  document.getElementById('180No').style.display='block';
-	      }
+	      document.getElementById('180Yes').style.display='block';
+	  } else if(document.getElementById('refno').checked)
+	  {
+	      document.getElementById('180No').style.display='block';
 	  }
-	  if(document.getElementById('deg120').checked)
+      }
+      if(document.getElementById('deg120').checked)
+      {
+	  if(document.getElementById('refyes').checked)
 	  {
-	      if(document.getElementById('refyes').checked)
-	      {
-		  document.getElementById('120Yes').style.display='block';
-	      } else if(document.getElementById('refno').checked)
-	      {
-		  document.getElementById('120No').style.display='block';
-	      }
+	      document.getElementById('120Yes').style.display='block';
+	  } else if(document.getElementById('refno').checked)
+	  {
+	      document.getElementById('120No').style.display='block';
 	  }
-	  if(document.getElementById('deg90').checked)
+      }
+      if(document.getElementById('deg90').checked)
+      {
+	  if(document.getElementById('refyes').checked)
 	  {
-	      if(document.getElementById('refyes').checked)
-	      {
-		  document.getElementById('90Yes').style.display='block';
-	      } else if(document.getElementById('refno').checked)
-	      {
-		  document.getElementById('90No').style.display='block';
-	      }
+	      document.getElementById('90Yes').style.display='block';
+	  } else if(document.getElementById('refno').checked)
+	  {
+	      document.getElementById('90No').style.display='block';
 	  }
-	  if(document.getElementById('deg60').checked)
+      }
+      if(document.getElementById('deg60').checked)
+      {
+	  if(document.getElementById('refyes').checked)
 	  {
-	      if(document.getElementById('refyes').checked)
-	      {
-		  document.getElementById('60Yes').style.display='block';
-	      } else if(document.getElementById('refno').checked)
-	      {
-		  document.getElementById('60No').style.display='block';
+	      document.getElementById('60Yes').style.display='block';
+	  } else if(document.getElementById('refno').checked)
+	  {
+	      document.getElementById('60No').style.display='block';
+	  }
+      }
+  }
+  
+  // load up the image
+  var img = document.createElement("img");
+  var curform = document.getElementById("myform");
+  //      console.log("rots: ",curform.rotations.value);
+
+  var rotval = '<%= @observation.rotations %>';
+  var refval = '<%= @observation.reflections %>';
+  var glival = '<%= @observation.glides %>';
+  var traval = '<%= @observation.translations %>';
+
+  // img.src = "<%= url_for(@observation.pic) %>"
+  img.src = "<%= url_for(@observation.pic.variant(resize_to_limit: [600,600])) %>"
+  // img.src = "<%= url_for(@observation.pic) %>"
+
+  // enabling drawing on the blank canvas
+  // console.log(img.naturalWidth);
+  // console.log(img.naturalHeight);
+  // console.log("blah");
+  // img.width = img.naturalWidth;
+  // img.height = img.naturalHeight;
+  // img.width = 600;
+  // img.height = 400;
+  // document.body.appendChild(img);
+  drawOnImage(img);
+
+  var symmElement = document.getElementsByName("symmRadio");
+  var cur_symm;
+  var st_x = 0;
+  var st_y = 0;
+  var en_x = 0;
+  var en_y = 0;
+  symmElement.forEach((c) => {
+      if (c.checked) cur_symm = c.value;
+  });
+  symmElement.forEach((c) => {
+      c.onclick = () => {
+	  cur_symm = c.value;
+      };
+  });
+
+  var cur_col;
+  var colorElement = document.getElementsByName("colorRadio");
+  document.getElementById("lineblack").checked = true;
+  colorElement.forEach((c) => {
+      if (c.checked) cur_col = c.value;
+  });
+  colorElement.forEach((c) => {
+      c.onclick = () => {
+	  cur_col = c.value;
+      };
+  });
+
+  const sizeElement = document.querySelector("#sizeRange");
+  let size = sizeElement.value;
+  sizeElement.oninput = (e) => {
+      size = e.target.value;
+  };
+
+  // draw my line based on coordinates and style
+  function myDrawLine(context,st_x,st_y,en_x,en_y,sz,col,mysty) {
+      // console.log(context,st_x,st_y,en_x,en_y,sz,col,mysty);
+      context.beginPath();
+      context.moveTo(st_x, st_y);
+      context.lineWidth = sz;
+      context.strokeStyle = col;
+      context.lineJoin = "round";
+      context.lineCap = "round";
+      context.setLineDash(mysty);
+      context.lineTo(en_x, en_y);
+      // context.closePath();
+      context.stroke();      
+  }
+
+  function myDrawNgon(context,st_x,st_y,sz,myrad,nSides,col,mysty) {
+      context.strokeStyle = 'black';
+      context.lineWidth = sz;
+      context.strokeStyle = col;
+      context.moveTo(st_x + sz * Math.cos(0), st_y + sz * Math.sin(0));
+      context.beginPath();
+      context.lineJoin = "round";
+      context.lineCap = "round";
+      context.setLineDash([]);
+      for (var side=0; side < nSides+1; side++) {
+	  context.lineTo(st_x + myrad * Math.cos(side * 2 * Math.PI / nSides), st_y + myrad * Math.sin(side * 2 * Math.PI / nSides));
+//	  console.log(st_x + myrad * Math.cos(side * 2 * Math.PI / nSides), st_y + myrad * Math.sin(side * 2 * Math.PI / nSides));
+//	  console.log('argy');
+      }
+      context.fillStyle = "#333333";
+      context.stroke();
+  }
+
+  function myDraw180(context,st_x,st_y,sz,myrad,nSides,col,mysty) {
+      context.strokeStyle = 'black';
+      context.lineWidth = sz;
+      nSides=10;
+      context.moveTo(st_x + sz * Math.cos(0), st_y + sz * Math.sin(0));
+      context.beginPath();
+      context.strokeStyle = col;
+      context.lineJoin = "round";
+      context.lineCap = "round";
+      context.setLineDash([]);
+      for (var side=0; side < nSides*1.0/2+1; side++) {
+	  context.lineTo(st_x + myrad * Math.cos(side * 2 * Math.PI / nSides), st_y + myrad * Math.sin(side * 2 * Math.PI / nSides));
+//	  console.log(st_x + myrad * Math.cos(side * 2 * Math.PI / nSides), st_y + myrad * Math.sin(side * 2 * Math.PI / nSides));
+//	  console.log('argy');
+      }
+      context.fillStyle = "#333333";
+      context.stroke();
+  }
+
+  function drawOnImage(image = null) {
+      const canvasElement = document.getElementById("canvas");
+  
+      const context = canvasElement.getContext("2d");
+  
+      //  console.log(image);
+      //  console.log("<%= url_for(@observation.pic) %>");
+      // if an image is present,
+      // the image passed as parameter is drawn in the canvas
+      const imageWidth = 0;
+      const imageHeight = 0;
+      var rect = canvas.getBoundingClientRect();
+
+      if (image) {
+	  // const imageWidth = image.width;
+	  // const imageHeight = image.height;
+	  // console.log(image.width,image.height);
+	  // console.log(typeof(image));
+    
+	  // rescaling the canvas element
+	  
+	  // console.log(image,imageWidth,imageHeight);
+	  context.drawImage(image, 0, 0); // , 400, 400);
+      }
+  
+      img.onload = () => {
+	  const imageWidth = 600; // img.naturalWidth;
+	  const imageHeight = 600; // img.naturalHeight;
+	  // console.log(imageWidth,imageHeight,imageHeight);
+	  // canvasElement.width = imageWidth;
+	  // canvasElement.height = imageHeight;
+	  context.drawImage(img,0,0);
+
+	  // plot reflections we've already found
+	  var myref = refval.split(';');
+	  console.log("reflections we're drawing: ",refval);
+	  for (let i = 0; i < myref.length-1; i++) {
+	      var tarr = myref[i].split(',');
+	      curform.reflections.value += (tarr + ';');
+	      myDrawLine(context,parseFloat(tarr[0]),parseFloat(tarr[1]),parseFloat(tarr[2]),parseFloat(tarr[3]),parseInt(tarr[4]),tarr[5],[]);
+	  }
+
+	  // plot glides we've already found
+	  console.log("glides we're drawing: ",glival);
+	  var mygli = glival.split(';');
+	  for (let i = 0; i < mygli.length-1; i++) {
+	      var tarr = mygli[i].split(',');
+	      curform.glides.value += (tarr + ';');
+	      myDrawLine(context,parseFloat(tarr[0]),parseFloat(tarr[1]),parseFloat(tarr[2]),parseFloat(tarr[3]),parseInt(tarr[4]),tarr[5],[5,15]);
+	  }
+
+	  // plot translations we've already found
+	  console.log("translations we're drawing: ",traval);
+	  var mytra = traval.split(';');
+	  for (let i = 0; i < mytra.length-1; i++) {
+	      var tarr = mytra[i].split(',');
+	      curform.translations.value += (tarr + ';');
+	      myDrawLine(context,parseFloat(tarr[0]),parseFloat(tarr[1]),parseFloat(tarr[2]),parseFloat(tarr[3]),parseInt(tarr[4]),tarr[5],[30,10,10,10,10,10,10,10]);
+	  }
+
+	  // plot rotations we've already found
+	  // tmpstr has x,y,linewidth,radius,number sides,col
+	  console.log("rotations we're drawing: ",rotval);
+	  var myrot = rotval.split(';');
+	  for (let i = 0; i < myrot.length-1; i++) {
+	      var tarr = myrot[i].split(',');
+	      curform.rotations.value += (tarr + ';');
+	      if (tarr[6] == '180') {
+		  myDraw180(context,parseFloat(tarr[0]),parseFloat(tarr[1]),parseInt(tarr[2]),parseInt(tarr[3]),parseInt(tarr[4]),tarr[5]);
+	      } else {
+		  myDrawNgon(context,parseFloat(tarr[0]),parseFloat(tarr[1]),parseInt(tarr[2]),parseInt(tarr[3]),parseInt(tarr[4]),tarr[5]);
 	      }
 	  }
       }
 
-// load up the image
-var img = document.createElement("img");
-var curform = document.getElementById("myform");
-//      console.log("rots: ",curform.rotations.value);
-
-  // img.src = "<%= url_for(@observation.pic) %>"
-      img.src = "<%= url_for(@observation.pic.variant(resize_to_limit: [600,600])) %>"
-// img.src = "<%= url_for(@observation.pic) %>"
-
-// enabling drawing on the blank canvas
-      // console.log(img.naturalWidth);
-      // console.log(img.naturalHeight);
-      // console.log("blah");
-      // img.width = img.naturalWidth;
-      // img.height = img.naturalHeight;
-      // img.width = 600;
-      // img.height = 400;
-// document.body.appendChild(img);
-drawOnImage(img);
-
-var colorElement = document.getElementsByName("colorRadio");
-var cur_symm;
-      var st_x = 0;
-      var st_y = 0;
-      var en_x = 0;
-      var en_y = 0;
-colorElement.forEach((c) => {
-  if (c.checked) cur_symm = c.value;
-});
-colorElement.forEach((c) => {
-  c.onclick = () => {
-    cur_symm = c.value;
-  };
-});
-
-function drawOnImage(image = null) {
-  const canvasElement = document.getElementById("canvas");
+      const clearElement = document.getElementById("clear");
+      clearElement.onclick = () => {
+	  context.clearRect(0, 0, canvasElement.width, canvasElement.height);
+	  curform.rotations.value = "";
+	  curform.reflections.value = "";
+	  curform.glides.value = "";
+	  curform.translations.value = "";
+	  rotval = "";
+	  refval = "";
+	  glival = "";
+	  traval = "";
+	  drawOnImage(img);
+      };
   
-  const context = canvasElement.getContext("2d");
-  
-//  console.log(image);
-//  console.log("<%= url_for(@observation.pic) %>");
-  // if an image is present,
-  // the image passed as parameter is drawn in the canvas
-    const imageWidth = 0;
-    const imageHeight = 0;
-  var rect = canvas.getBoundingClientRect();
-
-  if (image) {
-    // const imageWidth = image.width;
-    // const imageHeight = image.height;
-    // console.log(image.width,image.height);
-    // console.log(typeof(image));
-    
-    // rescaling the canvas element
-    
-    // console.log(image,imageWidth,imageHeight);
-      context.drawImage(image, 0, 0); // , 400, 400);
-  }
-  
-    img.onload = () => {
-	const imageWidth = 600; // img.naturalWidth;
-	const imageHeight = 600; // img.naturalHeight;
-	// console.log(imageWidth,imageHeight,imageHeight);
-	// canvasElement.width = imageWidth;
-	// canvasElement.height = imageHeight;
-	context.drawImage(img,0,0);
-    }
-
-  const clearElement = document.getElementById("clear");
-  clearElement.onclick = () => {
-    context.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  };
-  
-  var isDrawing = false;
-  canvasElement.onmousedown = (e) => {
-    // are we drawing a rotation or a line?
-      if (["60deg","90deg","120deg","180deg"].includes(cur_symm)) {
-	  st_x = e.clientX - rect.left;
-	  st_y = e.clientY - rect.top;
-          context.beginPath();
-	  var tmpstr = "[";
-	  if(cur_symm == "60deg") {
-	      context.arc(st_x, st_y, 10, 0, 2 * Math.PI/6, false);
-	      tmpstr += '60,'
-	  } else if (cur_symm == "90deg") {
-	      context.arc(st_x, st_y, 10, 0, Math.PI/2, false);
-	      tmpstr += '90,'
-	  } else if (cur_symm == "120deg") {
-	      context.arc(st_x, st_y, 10, 0, 2 * Math.PI/3, false);
-	      tmpstr += '120,'
-	  } else if (cur_symm == "180deg") {
-	      context.arc(st_x, st_y, 10, 0, Math.PI, false);
-	      tmpstr += '180,'
-	  }
-	  context.fillStyle = 'green';
-	  context.fill();
-	  context.lineWidth = 5;
-	  context.strokeStyle = '#003300';
-	  context.stroke();
-	  tmpstr += st_x.toString();
-	  tmpstr += ',';
-	  tmpstr += st_y.toString();
-	  tmpstr += ']';
-	  curform.rotations.value += tmpstr;
-	  console.log(curform.rotations);
-      } else {
-	  if (!isDrawing) {
+      var isDrawing = false;
+      canvasElement.onmousedown = (e) => {
+	  // are we drawing a rotation or a line?
+	  if (["60deg","90deg","120deg","180deg"].includes(cur_symm)) {
 	      st_x = e.clientX - rect.left;
 	      st_y = e.clientY - rect.top;
-	      console.log("starting",st_x,st_y);
-	  } else {
-	      en_x = e.clientX - rect.left;
-	      en_y = e.clientY - rect.top;
-	      console.log("ending",en_x,en_y);
-	      context.beginPath();
-	      context.moveTo(st_x, st_y);
-	      context.lineWidth = 2;
-	      var tmpstr = "[";
-	      if(cur_symm == "ref") {
-		  context.strokeStyle = "blue";
-		  tmpstr += 'ref,';
-	      } else if(cur_symm == "glide") {
-		  context.strokeStyle = "green";
-		  tmpstr += 'glide,';
-	      } else {
-		  context.strokeStyle = "gray";
-		  tmpstr += 'trans,';
-	      }
-	      context.lineJoin = "round";
-	      context.lineCap = "round";
-	      context.lineTo(en_x, en_y);
-	      // context.closePath();
+              context.beginPath();
+	      // tmpstr has x,y,linewidth,radius,number sides,col
+	      var tmpstr = "";
 	      tmpstr += (st_x.toString() + ',');
 	      tmpstr += (st_y.toString() + ',');
-	      tmpstr += (en_x.toString() + ',');
-	      tmpstr += (en_y.toString() + ']');
-	      context.stroke();
-	      if(cur_symm == "ref") {
-		  curform.reflections.value += tmpstr;
-	      } else if(cur_symm == "glide") {
-		  curform.glides.value += tmpstr;
-	      } else {
-		  curform.translations.value += tmpstr;
+	      tmpstr += (size.toString() + ',');
+	      tmpstr += ('10' + ',');
+	      if(cur_symm == "60deg") {
+		  // context.arc(st_x, st_y, 10, 0, 2 * Math.PI/6, false);
+		  myDrawNgon(context,st_x,st_y,size,30,6,cur_col,'60');
+		  tmpstr += '6,';
+		  tmpstr += cur_col + ',';
+		  tmpstr += '60;'
+	      } else if (cur_symm == "90deg") {
+		  // context.arc(st_x, st_y, 10, 0, Math.PI/2, false);
+		  myDrawNgon(context,st_x,st_y,size,10,4,cur_col,'90');
+		  tmpstr += '4,';
+		  tmpstr += cur_col + ',';
+		  tmpstr += '90;'
+	      } else if (cur_symm == "120deg") {
+		  // context.arc(st_x, st_y, 10, 0, 2 * Math.PI/3, false);
+		  myDrawNgon(context,st_x,st_y,size,10,3,cur_col,'120');
+		  tmpstr += '3,';
+		  tmpstr += cur_col + ',';
+		  tmpstr += '120;'
+	      } else if (cur_symm == "180deg") {
+		  //context.arc(st_x, st_y, 10, 0, Math.PI, false);
+		  myDraw180(context,st_x,st_y,size,10,2,cur_col,'180');
+		  tmpstr += '2,';
+		  tmpstr += cur_col + ',';
+		  tmpstr += '180;'
 	      }
+	      // context.fillStyle = 'green';
+	      // context.fill();
+	      // context.lineWidth = size;
+	      // context.strokeStyle = '#003300';
+	      // context.stroke();
+	      curform.rotations.value += tmpstr;
+	      console.log(curform.rotations);
+	  } else {
+	      if (!isDrawing) {
+		  st_x = e.clientX - rect.left;
+		  st_y = e.clientY - rect.top;
+		  console.log("starting",st_x,st_y);
+	      } else {
+		  en_x = e.clientX - rect.left;
+		  en_y = e.clientY - rect.top;
+		  console.log("ending",en_x,en_y);
+		  var tmpstr = "";
+		  tmpstr += (st_x.toString() + ',');
+		  tmpstr += (st_y.toString() + ',');
+		  tmpstr += (en_x.toString() + ',');
+		  tmpstr += (en_y.toString() + ',');
+		  tmpstr += (size.toString() + ',');
+		  tmpstr += cur_col + ',';
+		  if(cur_symm == "ref") {
+		      myDrawLine(context,st_x,st_y,en_x,en_y,size,cur_col,[]);
+		      tmpstr += 'ref;';
+		  } else if(cur_symm == "glide") {
+		      myDrawLine(context,st_x,st_y,en_x,en_y,size,cur_col,[5,15]);
+		      tmpstr += 'glide;';
+		  } else {
+		      myDrawLine(context,st_x,st_y,en_x,en_y,size,cur_col,[30,10,10,10,10,10,10,10]);
+		      tmpstr += 'trans;';
+		  }
+		  // context.stroke();
+		  if(cur_symm == "ref") {
+		      curform.reflections.value += tmpstr;
+		  } else if(cur_symm == "glide") {
+		      curform.glides.value += tmpstr;
+		  } else {
+		      curform.translations.value += tmpstr;
+		  }
+	      };
+              isDrawing = !isDrawing;
 	  };
-          isDrawing = !isDrawing;
       };
-
-  };
   
   // canvasElement.onmousemove = (e) => {
   //   if (isDrawing) {
@@ -385,6 +600,7 @@ function drawOnImage(image = null) {
   //   context.closePath();
   // };
 
-}
+  }
 
 </script>
+

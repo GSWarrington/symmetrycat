@@ -1,4 +1,9 @@
 class Observation < ApplicationRecord
+  belongs_to :user
+  validates :user_id, presence: true
+
+  default_scope -> { order(created_at: :desc) }
+  
   geocoded_by :address
   after_validation :geocode
 

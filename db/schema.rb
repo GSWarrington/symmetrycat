@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_31_212941) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_160534) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -61,6 +61,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_212941) do
     t.string "month"
     t.string "day"
     t.string "group"
+    t.integer "user_id", null: false
+    t.index ["created_at"], name: "index_observations_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_observations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -73,4 +76,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_212941) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "observations", "users"
 end

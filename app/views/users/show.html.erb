@@ -1,4 +1,14 @@
-<h1><%= current_user.name %></h1>
+<% provide(:title, "Users") %>
+<h1><%= @user.name %></h1>
 
-Congratulations, you are logged in!
+<div class="col-md-8">
+  <% if @user.observations.any? %>
+  <h3>Observations (<%= @user.observations.count %>)</h3>
+      <ol class="observations">
+        <%= render @observations %>
+      </ol>
+      <%= will_paginate @observations %>
+    <% end %>
+  </div>
+
 

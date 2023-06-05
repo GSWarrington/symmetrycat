@@ -1,11 +1,23 @@
 <h1>Observations</h1>
+
+<%= will_paginate %>
+
 <ul>
   <% @observations.each do |observation| %>
   <li>
     <%= link_to observation.title, observation %>
+    <% if observation.pic.attached? %>
+    <img src="<%=(url_for(observation.pic))%>" width="100" height="100">
+    <% end %>
+    
   </li>
   <% end %>
 </ul>  
 
+<%= will_paginate %>
 
+<% if logged_in? %>
 <%= link_to "New Observation", new_observation_path %>
+<% end %>
+<p>
+<!-- <%= link_to "Sign up now!", '#', class: "btn btn-lg btn-primary" %> -->

@@ -1,6 +1,6 @@
 class ObservationsController < ApplicationController
   def index
-    @observations = Observation.all
+    @observations = Observation.paginate(page: params[:page])
   end
 
   def show
@@ -12,7 +12,7 @@ class ObservationsController < ApplicationController
   end
 
   def create
-    @observation = Observation.new(observation_params)
+    @observation = current_user.observations.build(observation_params)
 
     if @observation.save
       redirect_to @observation
