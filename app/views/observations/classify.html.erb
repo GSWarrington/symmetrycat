@@ -357,8 +357,8 @@
       };
   });
 
-  const sizeElement = document.querySelector("#sizeRange");
-  let size = sizeElement.value;
+  var sizeElement = document.querySelector("#sizeRange");
+  var size = sizeElement.value;
   sizeElement.oninput = (e) => {
       size = e.target.value;
   };
