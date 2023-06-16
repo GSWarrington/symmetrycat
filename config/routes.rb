@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  root "observations#index"
+  # get 'site/index'
+  # get 'welcome/index'
+  # root "observations#index"
+  root "welcome#index"
   delete '/logout' => "sessions#destroy"
+  get '/help' => 'observations#help'
 
   # patch "/observations/:id", to: "observations#classifyupdate"
 

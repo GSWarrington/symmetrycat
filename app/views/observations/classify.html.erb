@@ -33,7 +33,7 @@
     }
 
     .width-slider {
-	width: 50%;
+	width: 70%;
     }
 
     .slider:hover {
@@ -106,7 +106,7 @@
       <label for="black">Glide reflection</label>
       <input type="radio" name="symmRadio" value="trans" />
       <label for="black">Translation</label>
-      <button id="clear" >Clear</button>
+      <button id="clear" >Clear annotations</button>
 
     <div class="slidecontainer">	
       <!-- <input type="range" min="1" max="8" value="5" class="slider" id="sizeRange"> -->
@@ -131,6 +131,8 @@
       <label for="black">Black</label>
       <input type="radio" name="colorRadio" id="lineorange" value="orange"/>
       <label for="black">Orange</label>
+      <input type="radio" name="colorRadio" id="lineorange" value="green"/>
+      <label for="black">Green</label>
       </div>
     </div>
   </div>
@@ -508,8 +510,8 @@
       canvasElement.onmousedown = (e) => {
 	  // are we drawing a rotation or a line?
 	  if (["60deg","90deg","120deg","180deg"].includes(cur_symm)) {
-	      st_x = e.clientX - rect.left;
-	      st_y = e.clientY - rect.top;
+	      st_x = e.offsetX; // e.clientX - rect.left;
+	      st_y = e.offsetY; // e.clientY - rect.top;
               context.beginPath();
 	      // tmpstr has x,y,linewidth,radius,number sides,col
 	      var tmpstr = "";
@@ -551,12 +553,12 @@
 	      console.log(curform.rotations);
 	  } else {
 	      if (!isDrawing) {
-		  st_x = e.clientX - rect.left;
-		  st_y = e.clientY - rect.top;
+		  st_x = e.offsetX; // clientX - rect.left;
+		  st_y = e.offsetY; // clientY - rect.top;
 		  console.log("starting",st_x,st_y);
 	      } else {
-		  en_x = e.clientX - rect.left;
-		  en_y = e.clientY - rect.top;
+		  en_x = e.offsetX; // clientX - rect.left;
+		  en_y = e.offsetY; // clientY - rect.top;
 		  console.log("ending",en_x,en_y);
 		  var tmpstr = "";
 		  tmpstr += (st_x.toString() + ',');

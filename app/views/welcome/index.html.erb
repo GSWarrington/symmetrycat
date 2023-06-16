@@ -1,0 +1,25 @@
+<h1>SymmetryCat</h1>
+
+<center>
+<a href="https://www.symmetrycat.org">SymmetryCat</a> allows you to
+upload pictures and classify them according to the amount of symmetry
+they have.<br> Think of it
+as <a href="https://www.inaturalist.org/">iNaturalist</a> but for
+symmetry instead of for species.
+</center>
+
+<% if logged_in? %>
+<ul>
+  <li> <%= link_to "Add new observation", new_observation_path %>
+  <li> <%= link_to "Show my observations", observations_path %>
+</ul>    
+<% else %>
+  <ul>
+    <li> <%= link_to "Sign up", signup_path %>
+    <li> <%= link_to "Log in", login_path %>
+  </ul>
+<% end %>
+
+<%= link_to "Help!", help_path %>
+
+

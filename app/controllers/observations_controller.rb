@@ -11,13 +11,16 @@ class ObservationsController < ApplicationController
     @observation = Observation.new
   end
 
+  def help
+  end
+
   def create
     @observation = current_user.observations.build(observation_params)
 
     if @observation.save
       redirect_to @observation
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
