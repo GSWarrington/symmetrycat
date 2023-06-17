@@ -1,18 +1,21 @@
-<h1>Observations</h1>
+<h1>All Observations</h1>
 
 <%= will_paginate %>
 
-<ul>
-  <% @observations.each do |observation| %>
-  <li>
-    <%= link_to observation.title, observation %>
-    <% if observation.pic.attached? %>
-    <img src="<%=(url_for(observation.pic))%>" width="100" height="100">
-    <% end %>
+<ol class="observations">
+  <%= render @observations %>
+</ol>
+
+<!-- <ul> -->
+<!--   <% @observations.each do |observation| %> -->
+<!--   <li> -->
+<!--     <%= link_to "blah", observation %> -->
+<!--     <% if observation.pic.attached? %> -->
+<!--     <% end %> -->
     
-  </li>
-  <% end %>
-</ul>  
+<!--   </li> -->
+<!--   <% end %> -->
+<!-- </ul>   -->
 
 <%= will_paginate %>
 

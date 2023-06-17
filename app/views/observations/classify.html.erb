@@ -68,8 +68,14 @@
 
 </style>
 
-<h1><%= @observation.title %></h1>
-
+<h1>Observation #<%= @observation.id %> by <%= @observation.user.username %></h1>
+<% if @observation.user != current_user %>
+<h2>You may annotate this observation, but since it is not yours,<br>
+may not save annotations or reclassify the image</h2>
+<% end %>
+<!-- < if @observation.user != current_user > -->
+<!-- <h2>You may changes on this page but they will not be saved</h2> -->
+<!-- < end > -->
 <ul>
   <li><%= link_to "Return to index", root_path %></li>
 </ul>
@@ -146,7 +152,7 @@
 <%= blahform.hidden_field :reflections, name: "reflections", value: "" %>
 <%= blahform.hidden_field :glides, name: "glides", value: "" %>
 <%= blahform.hidden_field :translations, name: "translations", value: "" %>
-<%= blahform.hidden_field :title %>
+<%= blahform.hidden_field :notes %>
 <fieldset>
     <b>No rotation:</b></b> 
     <%= blahform.radio_button :group, 'cm' %> cm
@@ -174,7 +180,9 @@
     <b>60-degree:</b> 
     <%= blahform.radio_button :group, 'p6m' %> p6m
     <%= blahform.radio_button :group, 'p6'  %> p6
+    <% if @observation.user == current_user %>
     <%= blahform.submit %>
+    <% end %>      
     <% end %>      
 </fieldset>
 
@@ -182,10 +190,10 @@
 <fieldset onchange="RadioChanged()">
     <legend id="type">Smallest rotation:</legend>
     <input type="radio" name="rot" id="norot" value="norot">None
-    <input type="radio" name="rot" id="deg180" value="deg60">180 degrees
-    <input type="radio" name="rot" id="deg120" value="deg90">120 degrees
+    <input type="radio" name="rot" id="deg180" value="deg180">180 degrees
+    <input type="radio" name="rot" id="deg120" value="deg120">120 degrees
     <input type="radio" name="rot" id="deg90" value="deg90">90 degrees
-    <input type="radio" name="rot" id="deg60" value="deg90">60 degrees
+    <input type="radio" name="rot" id="deg60" value="deg60">60 degrees
 </fieldset>
 <fieldset onchange="RadioChanged()">
     <legend id="refexist">Is there a reflection?</legend>

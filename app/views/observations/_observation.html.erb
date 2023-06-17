@@ -1,6 +1,11 @@
 <li id="observation-<%= observation.id %>">
-  <span class="user"><%= link_to observation.user.name, observation.user %></span>
   <span class="content"><%= link_to image_tag(url_for(observation.pic), :width => '100px'), observation %></span>
+  <% if observation.group == nil %>
+  Unclassified.
+  <% else %>
+  <b><big><%= observation.group %></big></b>.
+  <% end %>
+  <!-- <span class="user"><%= link_to observation.user.username, observation.user %></span> -->
   <span class="timestamp">
     Posted <%= time_ago_in_words(observation.created_at) %> ago.
   </span>

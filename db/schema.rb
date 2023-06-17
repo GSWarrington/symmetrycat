@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_05_160534) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_16_123147) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -40,7 +40,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_160534) do
   end
 
   create_table "observations", force: :cascade do |t|
-    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "latitude"
@@ -50,28 +49,30 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_160534) do
     t.text "state"
     t.string "country"
     t.string "street"
-    t.string "description"
+    t.string "notes"
     t.date "date"
     t.time "time"
     t.string "rotations"
     t.string "reflections"
     t.string "glides"
     t.string "translations"
-    t.string "year"
-    t.string "month"
-    t.string "day"
     t.string "group"
     t.integer "user_id", null: false
+    t.text "transformations"
+    t.boolean "virtual"
+    t.integer "dimension"
     t.index ["created_at"], name: "index_observations_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_observations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
+    t.string "username"
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.string "displayname"
+    t.text "bio"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

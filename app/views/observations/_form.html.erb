@@ -2,30 +2,38 @@
 
 <%= form_with model: observation do |form| %>
 <div>
-  <%= form.label :title %><br>
-  <%= form.text_field :title %>
-<p>
-  <%= form.label "Observation" %><br>
+  <%= form.label "Observation:" %>
   <%= form.file_field :pic %><br>
 <p>
-  <%= form.label :description %><br>
-  <%= form.text_field :description %><br>
-<p>
-  <%= form.label :date %><br>
+  <%= form.label :notes %>
+  <%= form.text_area :notes %>
+  <%= form.label "Date of observation" %>
   <%= form.date_field :date %>
 <p>  
-  <%= form.label :country %><br>
-  <%= form.text_field :country %>
-<p>  
-  <%= form.label :city %><br>
+  <%= form.label :street %>
+  <%= form.text_field :street %>
+  <%= form.label :city %>
   <%= form.text_field :city %>
 <p>  
-  <%= form.label :state %><br>
+  <%= form.label :state %>
   <%= form.text_field :state %>
+  <%= form.label :country %>
+  <%= form.text_field :country %>
 <p>  
-  <%= form.label :street %><br>
-  <%= form.text_field :street %>
-
+  Is this picture of something real (i.e., physically present in the world)?<br>
+  If <i>not</i>, mark as virtual by checking the box.
+  <%= form.label :virtual %>
+  <%= form.check_box :virtual %>
+<p>  
+  Select the option that best describes the symmetries of your image:
+  <ul>
+    <li> <%= form.radio_button :dimension, '2' %>
+      A wallpaper pattern such as for <%= image_tag("shirt-rb-sm.jpg", width: "10%") %>
+    <li> <%= form.radio_button :dimension, '1' %>
+      A frieze pattern such as for <%= image_tag("sampler-detail1-sm.jpg", width: "20%") %>
+    <li> <%= form.radio_button :dimension, '0' %>
+      A 2D point group such as for<%= image_tag("spinner-sm.jpg", width: "10%") %>
+  </ul>
 </div>
 
 <!-- This works, but don't know how to get lat/long back out of it. new page? -->

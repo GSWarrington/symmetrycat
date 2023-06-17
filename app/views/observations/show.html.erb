@@ -1,24 +1,40 @@
-<h1><%= @observation.title %></h1>
-
-<ul>
-  <!-- <li><%= link_to "Classify", edit_observation_path(@observation) %></li> -->
-  <li><a href="/observations/<%= @observation.id %>/classify">
-      <%= "Classify" %>
-  <li><%= link_to "Edit", edit_observation_path(@observation) %></li>
-  <% if @observation.user == current_user %>
-      <li><%= link_to "Destroy", observation_path(@observation), data: {
-              turbo_method: :delete,
-              } %></li>
-      <%# turbo_confirm: "Are you sure?" %></li>
+<!-- <h1> @observation.title </h1> -->
+<h1>
+  <% if @observation.dimension == 0 %>
+  2D Point Group: 
+  <% elsif @observation.dimension == 1 %>
+  Frieze Group: 
+  <% else %>
+  Wallpaper Group: 
   <% end %>
-  <li><%= link_to "Return to index", root_path %></li>
-</ul>
+  <% if @observation.group == nil %>
+  Unclassified
+  <% else %>
+  <%= @observation.group %>
+  <% end %>
+</h1>
+<h2>Posted by <%= @observation.user.username %>, <%= time_ago_in_words(@observation.created_at) %> ago.</h2>
+  <div class="column">
+    <% if @observation.pic.attached? %>
+    <img src="<%=(url_for(@observation.pic))%>" width="500" >
+    <% end %>
+  </div>
+  <div>  
+    <ul>
+      <!-- <li><%= link_to "Classify", edit_observation_path(@observation) %></li> -->
+      <li><a href="/observations/<%= @observation.id %>/classify">
+	  <%= "Classify" %>
+	  <% if @observation.user == current_user %>
+	  <li><%= link_to "Edit", edit_observation_path(@observation) %></li>
+	  <li><%= link_to "Destroy", observation_path(@observation), data: {
+		  turbo_method: :delete,
+		  } %></li>
+	  <%# turbo_confirm: "Are you sure?" %></li>
+      <% end %>
+      <li><%= link_to "Return to observations", current_user %></li>
+      <li><%= link_to "Return to home", root_path %></li>
+    </ul>
 
-<h2>Wallpaper group: <%= @observation.group %></h2>
-<h2><%= @observation.address %></h2>
-<h2><%= @observation.user.name %></h2> 
-
-<% if @observation.pic.attached? %>
-  <img src="<%=(url_for(@observation.pic))%>" width="500" height="600">
-<% end %>
+    <!-- <h2><%= @observation.address %></h2> -->
+    <!-- <h2><%= @observation.user.username %></h2>  -->
   

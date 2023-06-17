@@ -1,9 +1,11 @@
 <% provide(:title, "Users") %>
-<h1><%= @user.name %></h1>
+<h1>User <%= @user.username %></h1>
+
+<%= link_to "Add new observation", new_observation_path %>
 
 <div class="col-md-8">
   <% if @user.observations.any? %>
-  <h3>Observations (<%= @user.observations.count %>)</h3>
+  <h3>Observations (<%= @user.observations.count %> Total)</h3>
       <ol class="observations">
         <%= render @observations %>
       </ol>

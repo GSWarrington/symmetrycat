@@ -8,10 +8,21 @@ as <a href="https://www.inaturalist.org/">iNaturalist</a> but for
 symmetry instead of for species.
 </center>
 
+<center>
+<%= image_tag("shirt-rb-sm.jpg", width: "20%") %>
+<%= image_tag("floral-chair-sm.jpg", width: "20%") %>
+<%= image_tag("cushion-sm.jpg", width: "20%") %>
+</center>
+<br>
+
+If you're new to this site, <%= link_to "Click here", help_path %> for general information.
+<br>
+
 <% if logged_in? %>
 <ul>
-  <li> <%= link_to "Add new observation", new_observation_path %>
-  <li> <%= link_to "Show my observations", observations_path %>
+  <li> <%= link_to "Add new observation", new_observation_path %></li>
+  <li> <%= link_to "Show my observations", current_user %></li>
+  <li> <%= link_to "Show all observations", observations_path %>
 </ul>    
 <% else %>
   <ul>
@@ -20,6 +31,5 @@ symmetry instead of for species.
   </ul>
 <% end %>
 
-<%= link_to "Help!", help_path %>
 
 

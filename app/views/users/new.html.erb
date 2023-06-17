@@ -2,23 +2,36 @@
 
 <%= form_with model: @user do |form| %>
   <div>
-    <%= form.label :name %><br>
-    <%= form.text_field :name %>
+    <%= form.label "Username*" %><br>
+    For login. Displayed along with observations.<br>
+    <%= form.text_field :username, required: true %><p>
   </div>
 
   <div>
-    <%= form.label :email %><br>
-    <%= form.text_field :email %>
+    <%= form.label "Email*" %><br>
+    <%= form.text_field :email, required: true %><p>
   </div>
 
   <div>
-    <%= form.label :password %><br>
-    <%= form.password_field :password %>
+    <%= form.label :displayname %> <br>
+    Displayed on your profile.<br>
+    This is where your real name would go if you want to share it.<br>
+    <%= form.text_field :displayname %><p>
   </div>
 
   <div>
-    <%= form.label :password_confirmation, "Confirmation" %><br>
-    <%= form.password_field :password_confirmation %>
+    <%= form.label :bio %><br>
+    <%= form.text_area :bio %><p>
+  </div>
+
+  <div>
+    <%= form.label "Password*" %><br>
+    <%= form.password_field :password, required: true %><p>
+  </div>
+
+  <div>
+    <%= form.label :password_confirmation, "Confirmation*" %><br>
+    <%= form.password_field :password_confirmation, required: true %><p>
   </div>
 
   <div>
