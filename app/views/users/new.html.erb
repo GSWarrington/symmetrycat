@@ -2,35 +2,39 @@
 
 <%= form_with model: @user do |form| %>
   <div>
-    <%= form.label "Username*" %><br>
-    For login. Displayed along with observations.<br>
-    <%= form.text_field :username, required: true %><p>
+    <%= form.label "Username*" %>
+    <%= form.text_field :username, required: true %><br>
+    For login. Displayed along with observations.<p>
   </div>
 
+  <br>
+
   <div>
-    <%= form.label "Email*" %><br>
+    <%= form.label "Email*" %>
     <%= form.text_field :email, required: true %><p>
   </div>
 
-  <div>
-    <%= form.label :displayname %> <br>
-    Displayed on your profile.<br>
-    This is where your real name would go if you want to share it.<br>
-    <%= form.text_field :displayname %><p>
-  </div>
+  <br>
 
   <div>
-    <%= form.label :bio %><br>
-    <%= form.text_area :bio %><p>
+    <%= form.label :displayname %> <%= form.text_field :displayname %><br>
+    Displayed on your profile. This is where your real name should go if you want to share it.<br>
+    <p>
   </div>
 
+  <br>
+  <!-- <div> -->
+  <!--   <%= form.label :bio %><br> -->
+  <!--   <%= form.text_area :bio %><p> -->
+  <!-- </div> -->
+
   <div>
-    <%= form.label "Password*" %><br>
+    <%= form.label "Password*" %>
     <%= form.password_field :password, required: true %><p>
   </div>
 
   <div>
-    <%= form.label :password_confirmation, "Confirmation*" %><br>
+    <%= form.label :password_confirmation, "Confirmation*" %>
     <%= form.password_field :password_confirmation, required: true %><p>
   </div>
 

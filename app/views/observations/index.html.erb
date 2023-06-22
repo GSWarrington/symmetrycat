@@ -1,10 +1,10 @@
 <h1>All Observations</h1>
 
-<%= will_paginate %>
+<%= paginate @observations %>
 
-<ol class="observations">
-  <%= render @observations %>
-</ol>
+      <ol class="observations">
+        <%= render @observations %>
+      </ol>
 
 <!-- <ul> -->
 <!--   <% @observations.each do |observation| %> -->
@@ -15,9 +15,7 @@
     
 <!--   </li> -->
 <!--   <% end %> -->
-<!-- </ul>   -->
-
-<%= will_paginate %>
+<!-- </ul> -->
 
 <% if logged_in? %>
 <%= link_to "New Observation", new_observation_path %>

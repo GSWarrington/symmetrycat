@@ -1,6 +1,6 @@
 class ObservationsController < ApplicationController
   def index
-    @observations = Observation.paginate(page: params[:page])
+    @observations = Observation.order(:created_at).page params[:page]
   end
 
   def show

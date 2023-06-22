@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   # get 'welcome/index'
   # root "observations#index"
   root "welcome#index"
+  get '/terms' => 'welcome#TOS'
+  get '/privacy' => 'welcome#privacy'
   delete '/logout' => "sessions#destroy"
   get '/help' => 'observations#help'
 

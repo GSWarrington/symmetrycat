@@ -7,6 +7,7 @@ class Observation < ApplicationRecord
   geocoded_by :address
   after_validation :geocode
 
+  paginates_per 4
 #  validates :title, presence: true
 #  {message: 'Title required'}
 #  validates :address, presence: true
