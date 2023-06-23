@@ -16,7 +16,12 @@
 <h2>Posted by <%= @observation.user.username %>, <%= time_ago_in_words(@observation.created_at) %> ago.</h2>
   <div class="column">
     <% if @observation.pic.attached? %>
-    <img src="<%=(url_for(@observation.pic))%>" width="500" >
+       <img src="<%=(url_for(@observation.pic))%>" width="500" >
+       <% if @observation.user.displayname? %>
+       Copyright <%= @observation.user.displayname %> under <%= @observation.license %>
+       <% else %>
+       <%= Copyright @observation.user.username under @observation.license %>
+       <% end %>
     <% end %>
   </div>
   <div>  
