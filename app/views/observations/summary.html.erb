@@ -1,0 +1,61 @@
+<h1>Summary of Observations</h1>
+
+Total observations <%= @observations.count %><br>
+Total wallpaper: <%= @observations.where(dimension: 2).count %><br>
+Total frieze: <%= @observations.where(dimension: 1).count %><br>
+Total point group: <%= @observations.where(dimension: 0).count %><br>
+
+<div style="overflow-x:auto;">
+<table width=100%>
+  <tr>
+    <th>Smallest rotation</th>
+    <th colspan="3">Has a reflection</th>
+    <th colspan="2">No reflections </th>
+  </tr>
+  <tr>
+    <td>No rotations</td>
+    <td colspan="2">cm: <%= @observations.where(group: "cm").count %></td>
+    <td>pm: <%= @observations.where(group: "pm").count %></td>
+    <td>pg: <%= @observations.where(group: "pg").count %></td>
+    <td>p1: <%= @observations.where(group: "p1").count %></td>
+  </tr>
+  <tr>
+    <td>180 degrees</td>
+    <td>cmm: <%= @observations.where(group: "cmm").count %></td>
+    <td>pmm: <%= @observations.where(group: "pmm").count %></td>
+    <td>pmg: <%= @observations.where(group: "pmg").count %></td>
+    <td>pgg: <%= @observations.where(group: "pgg").count %></td>
+    <td>p2:  <%= @observations.where(group:  "p2").count %></td>
+  </tr>
+  <tr>
+    <td>120 degrees</td>
+    <td colspan="2">p31m: <%= @observations.where(group: "p31m").count %></td>
+    <td>p3m1: <%= @observations.where(group: "p3m1").count %></td>
+    <td colspan="2">p3: <%= @observations.where(group: "p3").count %></td>
+  </tr>
+  <tr>
+    <td>90 degrees</td>
+    <td colspan="2">p4m: <%= @observations.where(group: "p4m").count %></td>
+    <td>p4g: <%= @observations.where(group: "p4g").count %></td>
+    <td colspan="2">p4: <%= @observations.where(group: "p4").count %></td>
+  </tr>
+  <tr>
+    <td>60 degrees</td>
+    <td colspan="3">p6m: <%= @observations.where(group: "p6m").count %></td>
+    <td colspan="2">p6: <%= @observations.where(group: "p6").count %></td>
+  </tr>
+</table>
+</div>
+
+<!-- <ul> -->
+<!--   <% @observations.each do |observation| %> -->
+<!--   <li> -->
+<!--     <%= link_to "blah", observation %> -->
+<!--     <% if observation.pic.attached? %> -->
+<!--     <% end %> -->
+    
+<!--   </li> -->
+<!--   <% end %> -->
+<!-- </ul> -->
+
+<!-- <%= link_to "Sign up now!", '#', class: "btn btn-lg btn-primary" %> -->
