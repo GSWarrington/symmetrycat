@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/terms' => 'welcome#TOS'
   get '/privacy' => 'welcome#privacy'
   delete '/logout' => "sessions#destroy"
+  get '/observations/summary' => 'observations#summary'
   get '/help' => 'observations#help'
 
   # patch "/observations/:id", to: "observations#classifyupdate"

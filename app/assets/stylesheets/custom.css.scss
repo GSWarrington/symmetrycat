@@ -124,6 +124,20 @@ details[open] summary {
 
 .tab { margin-left: 10%; }
 
+th {
+    border-bottom: 1px solid #000;
+    text-align: center;
+}
+
+td {
+    border-bottom: 1px solid #ddd;
+}
+
+table {
+    collapse-border: collapse;
+    border: 1px solid;
+}
+
 // .column {
 //   float: left;
 //   width: 50%;

@@ -61,6 +61,10 @@ class ObservationsController < ApplicationController
     @observation = Observation.find(params[:id])
   end
 
+  def summary
+    @observations = Observation.all
+  end
+
   # def classifyupdate
   #   @observation = Observation.find(params[:id])
 
