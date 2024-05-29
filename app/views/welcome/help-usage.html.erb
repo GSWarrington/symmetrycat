@@ -1,0 +1,163 @@
+<h1>Help</h1>
+
+<center>
+<a href="https://www.symmetrycat.org">SymmetryCat</a> allows you to
+upload pictures and classify them according to the amount of symmetry
+they have.<br> Think of it
+as <a href="https://www.inaturalist.org/">iNaturalist</a> but for
+symmetry instead of for species.
+</center>
+
+<!-- Disclosure widget - why isn't triangle appearing -->
+
+<details>
+  <summary>What can you do on SymmetryCat?</summary>
+
+  SymmetryCat is designed to let you upload pictures and classify them
+  according to their symmetry. You may view images that others have
+  uploaded without logging in, but to upload your own images, you
+  should first <%= link_to "Sign up", signup_path %> and then
+  <%= link_to "Log in", login_path %>. Once you have that settled, you
+  can
+  <ul>
+    <li> <%= link_to "Upload", new_observation_path %> your own image and then annotate and classify it (wallpaper only right now)</li>
+    <li> <%= link_to "View", observations_path %> images you or others have uploaded</li>
+    <li> Edit your profile</li>
+  </ul>
+  Features that are high priority to add:
+  <ul>
+    <li> The ability to filter observations by various properties (e.g., symmetry class, who uploaded, location, ...)
+    <li> Add point-group and frieze pattern symmetries to classifier
+    <li> Tag images (e.g., by object, by school class, ...)
+    <li> Statistics regarding percentage of uploaded images falling into various symmetry classes.
+  </ul>
+
+</details>
+
+<details>
+  <summary>Guide to how to annotate an image and classify it</summary>
+
+  <p>
+    <div style="color:red;">
+  <b>This is something of a mock-up at this point but hopefully
+  suffices to get you started. The classification interface needs a
+  lot of work and will likely change significantly. A more detailed
+  guide will be added once that work has been done.</b></p></div>
+
+  <p>
+  From the listing for a given observation, click on the "classify"
+  link to allow you to annotate the image as to what the rotational,
+  reflectional, translational, and glide symmetries are and then
+  select a specific symmetry class.</p>
+
+  <details>
+    <summary>General notes on classifying</summary>
+
+    <%= image_tag("classify-page.jpg", width: "30%") %>
+    <p>
+      At the moment, the classification page has four main areas.
+      <ul>
+	<li> <details>
+	    <summary>Image area</summary>
+
+	    This is where you should actually draw on the image to
+	    indicate specific symmetries.
+	    </details>
+
+	<li> <details>
+	    <summary>Annotation area</summary>
+
+	    <p>
+	    Here you can select what type of annotation you wish to
+	    add. The color should be chosen so as to contrast with the
+	    background of the image &mdash; the color does not have
+	    any meaning as to what kind of symmetry is being
+	    marked. Unfortunately, "Clear annotations" currently
+	    removes <i>all</i> annotations. This should be fixed
+	    soon!</p>
+	    
+	    <p>
+	      When annotating:
+	      <ul> 
+		<li> If a rotation is selected, clicking at any point in the
+		  image will add a marker designating a rotation. The shape of the
+		  marker indicates the number of degrees.
+		<li> If a translation, reflection or glide is selected, you
+		  must click twice to mark two points of the line. At this
+		  point, nothing displays after the first click, but the line
+		  will show up after the second click. The style of the line
+		  indicates which type of symmetry is denotes.
+		<li> By the vary nature of these images, a given symmetry will
+		  typically repeat many times in the image. We recommend
+		  marking it once, close to the center of the image.
+	      </ul>
+	    </p>
+	    </details>
+
+	<li> <details>
+	    <summary>Classification area</summary>
+
+	    <p>
+	      After annotating your image and following the
+	      flowchart guidance, select the appropriate symmetry
+	      class. Then click the update button to save your
+	      modifications.</p>
+
+	  </details>
+
+	<li> <details>
+	    <summary>Guidance area</summary>
+
+	    <p>
+	      Here flowchart logic is encoded to guide you to the
+	      correct classification. We recommend you look at this
+	      after annotating your image. Once the minimum rotational
+	      symmetry has been selected and you have answered whether
+	      or not there are any reflectional symmetries, further
+	      guidance will be displayed.</p>
+	    </details>
+      </ul>
+    </p>
+    </details>
+
+  <details>
+    <summary>Example classification</summary>
+
+    <p>
+    Here we illustrate the process of determining the symmetry class
+    for a particular image.  We have highlighted in red the central
+    hexagon. Note that it is <i>not</i> regular, the smallest rotation
+    that will be a symmetry is 180 degrees. Similarly, this implies
+    that the only reflections (as we see marked below) are vertical
+    and horizontal.</p>
+
+    <%= image_tag("classify-ex1.jpg", width: "50%") %>    
+
+    <p>
+    In the second image we have marked representative rotations of 180
+    degrees. Note that there essentially three different points we can
+    rotate about. In general we recommend only marking <i>minimal</i>
+    rotations. So, for example, if there are rotational symmetries of
+    90 degrees, don't bother marking any of 180 degrees.</p>
+
+    <%= image_tag("classify-ex2.jpg", width: "50%") %>        
+
+    <p>
+    In the third image we have marked in green two reflectional
+    symmetries. In white we have marked a glide reflection.</p>
+
+    <%= image_tag("classify-ex3.jpg", width: "50%") %>        
+
+    <p>
+    We have opted not to mark any translational symmetries as it
+    doesn't really help with the classification. In the image below we
+    show the appropriate selections for the two guidance
+    questions. The minimal rotation is 180 degrees and there are
+    rotations in two directions. We see that there <i>is</i> a
+    rotation about a point not lying on a reflection axis, so the
+    symmetry class is <b>pmm</b>.</p>
+
+    <%= image_tag("classify-ex4.jpg", width: "50%") %>        
+
+  </details>
+</details>
